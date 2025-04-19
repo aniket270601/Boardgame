@@ -1,0 +1,26 @@
+---
+- name: Configure app server
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  vars:
+    ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+    app: openjdk-17-jdk
+
+  tasks:
+    - name: Install Java JDK
+      apt:
+        name: "{{ app }}"
+        state: present
+        update_cache: yes
+    
+
+    - name: Pull artifact from nexus repo
+      get_url:
+        url: 'http://172.31.16.4:8081/repository/maven-releases/com/example/myapp/1.0.0/myapp-1.0.0.jar'
+        dest: '/opt/'
+        mode: '0777'
+
+
+    - name: Start the application
+      shell: java -jar /opt/myapp-1.0.0.jar
