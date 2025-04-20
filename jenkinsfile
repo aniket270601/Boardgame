@@ -1,0 +1,52 @@
+pipeline {
+    
+    agent { label 'CI_Agent' }
+
+
+    stages {
+
+        stage('Cloning the Repository') {
+            steps {
+                git(
+                    branch: 'main',
+                    url: 'https://github.com/aniket270601/Boardgame.git',
+                    credentialsId: 'GIT-PAT'
+                )
+            }
+        }
+
+
+
+        stage('Initiating Terraform') {
+            steps {
+
+                sh 'terraform init'
+            }
+
+        }
+
+
+
+        stage('Terraform Apply') {
+            steps {
+                
+                withCredentials([
+                         usernamePassword(credentialsId: 'aws-creds', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+ 
+                      sh 'terraform apply --auto-approve'
+                   }
+
+                
+            }
+        }
+
+
+        
+    }
+
+
+    
+
+
+}
