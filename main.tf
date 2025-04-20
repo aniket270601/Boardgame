@@ -18,7 +18,7 @@ provider "aws" {
 
 
 resource "aws_instance" "appserver" {
-    ami = "ami-0dee22c13ea7a9a67"
+    ami = "ami-084568db4383264d4"
     instance_type = "t3.small"
     subnet_id = local.subnet_id
     associate_public_ip_address = true
