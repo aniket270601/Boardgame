@@ -16,6 +16,12 @@ provider "aws" {
 
 
 
+variable "alb_name" {
+
+    default = "my-alb"
+}
+
+
 
 resource "aws_instance" "appserver" {
     ami = "ami-084568db4383264d4"
@@ -46,3 +52,83 @@ resource "aws_instance" "appserver" {
 }
 
 
+
+
+
+# Security Group for ALB
+resource "aws_security_group" "alb_sg" {
+  name        = "${var.alb_name}-sg"
+  description = "Allow HTTP inbound traffic"
+  vpc_id      = local.vpc_id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
+
+
+# ALB
+resource "aws_lb" "alb" {
+  name               = var.alb_name
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.alb_sg.id]
+  subnets            = ["subnet-0bcc3e3e2067fb21b", "subnet-04d3aa79468b820ac"]
+}
+
+
+
+
+#Target Group
+resource "aws_lb_target_group" "tg" {
+  name     = "${var.alb_name}-tg"
+  port     = 8080
+  protocol = "HTTP"
+  vpc_id   = local.vpc_id
+
+  health_check {
+    path                = "/"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    matcher             = "200-299"
+  }
+}
+
+
+
+
+#attach target Group
+resource "aws_lb_target_group_attachment" "attach_web" {
+  target_group_arn = aws_lb_target_group.tg.arn
+  target_id        = aws_instance.appserver.id
+  port             = 8080
+}
+
+
+
+
+#Listener for lb 
+resource "aws_lb_listener" "http_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.tg.arn
+  }
+}
