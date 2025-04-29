@@ -51,11 +51,6 @@
         enabled: yes
         state: started
 
-  handlers:
-    - name: restart app
-      systemd:
-        name: "{{ service_name }}"
-        state: restarted
 
 
 
@@ -109,6 +104,15 @@
         name: node_exporter
         enabled: yes
         state: started
+
+
+
+
+  handlers:
+    - name: restart app
+      systemd:
+        name: "{{ service_name }}"
+        state: restarted
 
 
 
