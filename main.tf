@@ -49,6 +49,18 @@ resource "aws_instance" "appserver" {
     provisioner "local-exec"{
         command = "ansible-playbook -i ${ aws_instance.appserver.public_ip}, --private-key ${local.private_key_path} appserver.yml"
     }
+
+
+
+    provisioner "local-exec" {
+        command = <<EOT
+          ansible-playbook -i "${aws_instance.appserver.public_ip}," \
+           --private-key "${local.private_key_path}" \
+           update_Prometheus.yml \
+           -e "target_ip=${self.private_ip}"
+        EOT
+}
+
 }
 
 
