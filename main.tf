@@ -54,7 +54,7 @@ resource "aws_instance" "appserver" {
 
     provisioner "local-exec" {
         command = <<EOT
-          ansible-playbook -i "${aws_instance.appserver.public_ip}," \
+          ansible-playbook -i "172.31.21.157," \
            --private-key "${local.private_key_path}" \
            update_Prometheus.yml \
            -e "target_ip=${self.private_ip}"
