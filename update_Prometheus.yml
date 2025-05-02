@@ -1,0 +1,29 @@
+---
+- name: Update Prometheus.yml in Prometheus server 
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  vars:
+    ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+
+  
+  tasks:
+    - name: Ensure target is listed in Prometheus config
+      lineinfile:
+        path: /etc/prometheus/prometheus.yml
+        insertafter: 'static_configs:'
+        line: "    - targets: ['{{ target_ip }}:9100']"
+        state: present
+      notify: restart prometheus
+
+
+    - name: Reload system
+      systemd:
+        daemon_reload: yes
+
+
+  handlers:
+    - name: restart prometheus
+      systemd:
+        name: prometheus
+        state: restarted
