@@ -59,7 +59,7 @@ resource "aws_instance" "appserver" {
            update_Prometheus.yml \
            -e "target_ip=${self.private_ip}"
         EOT
-}
+    }
 
 }
 
