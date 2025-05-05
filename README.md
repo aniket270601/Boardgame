@@ -153,13 +153,13 @@ Go to **Manage Jenkins → Credentials → Global** and add:
   * In **Pipeline → Definition**, choose **Pipeline script from SCM**
   * Select SCM (e.g., Git), enter repository URL and credentials
   * In **Script Path**, enter path to the Jenkinsfile (e.g., `Jenkinsfile` or `ci/Jenkinsfile`)
-  * The CI Jenkinsfile is saved in the **CI branch** of your repo
+  * The CI Jenkinsfile is saved in the **CI branch** of current repo
   * Click **Save**
 
 ### 12. Create Jenkins CD Job
 
 * Follow the same steps as CI job
-* Use Jenkinsfile from the **CD branch** of your repo
+* Use Jenkinsfile from the **CD branch** of current repo
 * In job configuration:
 
   * Enable **Build after other projects are built** to trigger after CI success
@@ -181,6 +181,7 @@ Go to **Manage Jenkins → Credentials → Global** and add:
 
 * Copy the DNS of the load balancer from Terraform output.
 * Open in browser (with `http://` prefix).
+* You will also be able to see sonarqube code analysis at http://<sonarqube-ip>:9000
 
 ### 16. Prometheus & Grafana Monitoring Setup
 
