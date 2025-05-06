@@ -1,6 +1,6 @@
 # CI/CD Pipeline Setup with Jenkins, SonarQube, Nexus, Docker, Terraform, Ansible, Prometheus, and Grafana
 
-This repository contains Java based application which will be hosted on amazon application load balancer. The OWASP-DC and SonaraQube code analysis will also be performed on source code. As a result, application will be built using Maven and then executable binary will be pushed to Nexus repository to store build artifact in CI part.
+This repository contains Java based application which will be hosted on amazon application load balancer. The OWASP-DC and SonarQube code analysis will also be performed on source code. As a result, application will be built using Maven and then executable binary will be pushed to Nexus repository to store build artifact in CI part.
 In CD Part, Terraform (main.tf) will provision the application server (on which application will be hosted). It will aslo provision amazon application load balancer. Ansible (appserver.yml) will make configutation changes and install required dependencies to run application. The provisioned application server will then be registered as prometheus target via ansible and then Grafana will pull the metrics from prometheus data source.
 
 
