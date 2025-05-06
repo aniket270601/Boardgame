@@ -126,6 +126,14 @@ Go to **Manage Jenkins → Credentials → Global** and add:
 
   * ID: `CI_Agent-creds`
 
+* **AWS credentials** (Kind: Username with Password):
+
+  * ID: `aws-creds`
+  * Username: `<Enter aws access key>`
+  * Password: `<Enter aws secret access key>`
+
+We can use below approach as well to pass aws creds to Terraform.
+
 ### 10. Setup AWS Credentials for Terraform
 
 * On the Jenkins Agent machine:
