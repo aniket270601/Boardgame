@@ -1,4 +1,4 @@
-# CI/CD Pipeline Setup with Jenkins, SonarQube, Nexus, Terraform, Ansible, Prometheus, and Grafana
+# CI/CD Pipeline Setup with Jenkins, SonarQube, Nexus, Docker, Terraform, Ansible, Prometheus, and Grafana
 
 ## Prerequisites
 
